@@ -11,6 +11,21 @@ public class GoodDriver extends Vehicle {
 	
 	
 	public void update() {
+		double acceleration = 0;
 		
+		try {
+			int nextCarIndex = primaryLane.binarySearch(position);
+			if (primaryLane.vehicles.get(nextCarIndex).position == this.position) {
+				nextCarIndex += 1;
+			}
+			Vehicle v = primaryLane.vehicles.get(nextCarIndex);
+			double dV = v.velocity - velocity;
+			double dX = v.position - position;
+			acceleration = alpha * dV * velocity / (dX * dX);
+		} catch (NullPointerException e) { // top of lane
+			double dV = 60 - velocity;
+			acceleration = alpha * dV;
+		}
+		velocity += acceleration * Simulator.dt;
 	}
 }
