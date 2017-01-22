@@ -8,6 +8,7 @@ public abstract class Vehicle implements Comparable<Vehicle>  {
 	public LaneManager secondaryLane;
 	public boolean isMerging;
 	public double probableMerge;
+	public double dummy;
 	
 	public void update() {
 //		if (secondaryLane == null) {
