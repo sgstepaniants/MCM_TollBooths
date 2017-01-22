@@ -7,9 +7,11 @@ public class Simulator {
 	ArrayList<LaneManager> lanes;
 	
 	public Simulator() {
-		for (LaneManager lane : this.lanes) {
-			// update lane
-			// progress vehicles in lane and add merging vehicles
+		for (double time = 0; time < 1000000000; time += dt) {
+			for (LaneManager lane : lanes) {
+				// populate lanes
+				
+			}
 		}
 	}
 	
