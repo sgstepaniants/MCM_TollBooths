@@ -19,6 +19,7 @@ public abstract class LaneManager {
     
     public void updateVehicles() { // updates positions, velocities and lanes of vehicles
         for (int i = vehicles.size() - 1; i >= 0; i--) {
+        	vehicles.get(i).update();
             if (!vehicles.get(i).isMerging) {
                 if (edgeLane) {
                     edgeUpdate(i);
@@ -49,7 +50,6 @@ public abstract class LaneManager {
         if (v.shouldMergeEdge(manager.getLane(neighor))) {
             merge(i, v, manager.getLane(neighor));
         }
-        v.update();
     }
     
     public void centerUpdate(int i) { // updates vehicle i in a center lane
@@ -67,7 +67,6 @@ public abstract class LaneManager {
         } else {
             v.position += v.velocity * Simulator.dt;
         }
-        v.update();
     }
     
     public boolean centerShouldMerge(int i, int laneRank) {
