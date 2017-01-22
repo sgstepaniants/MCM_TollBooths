@@ -2,12 +2,12 @@ package main;
 
 import java.util.*;
 
-public class Simulator {
+public class SimulatorMain {
 	public static final double dt = 0.01;
-	ArrayList<LaneManager> lanes;
+	public static ArrayList<LaneManager> lanes;
 	
 	public static void main(String[] args) {
-		for(lane : lanes) {
+		for(LaneManager lane : lanes) {
 			//stuff
 		}
 	}
