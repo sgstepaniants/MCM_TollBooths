@@ -17,7 +17,7 @@ public abstract class Vehicle implements Comparable<Vehicle>  {
 //				
 //			}
 //		} else { // is merging
-//			
+//			d
 //		}
 	}
 	
