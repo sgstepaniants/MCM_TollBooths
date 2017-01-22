@@ -43,6 +43,7 @@ public abstract class LaneManager {
         vehicles.remove(i);
         lane.mergingVehicles.add(i, v);
         v.isMerging = true;
+        v.primaryLane = lane;
     }
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
