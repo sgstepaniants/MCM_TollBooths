@@ -4,7 +4,7 @@ import java.util.*;
 public abstract class LaneManager {
     ArrayList<Vehicle> vehicles;
     ArrayList<Vehicle> mergingVehicles;
-    SimulatorMain manager;
+    Simulator manager;
     
     int laneRank;
     int neighor;
@@ -65,7 +65,7 @@ public abstract class LaneManager {
         } else if (v.shouldMergeCenter(manager.getLane(laneRank - 1))) {
             merge(i, v, manager.getLane(laneRank - 1));
         } else {
-            v.position += v.velocity * SimulatorMain.dt;
+            v.position += v.velocity * Simulator.dt;
         }
         v.update();
     }
