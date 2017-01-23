@@ -19,12 +19,10 @@ public class Simulator {
 		
 		for (; this.time < 1000000000; this.time += dt) {
 			for (LaneManager lane : lanes) {
+				// at every timestep, the lane is updated which in turn, updates every car
+				// in the lane in random order
 				lane.update();
 			}
 		}
-	}
-	
-	public static LaneManager getLane(int laneRank) {
-		return lanes.get(laneRank);
 	}
 }

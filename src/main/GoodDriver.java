@@ -19,6 +19,29 @@ public class GoodDriver extends Vehicle {
 	public void update() {
 		double acceleration = 0;
 		
+		// see if you need to merge before anything else
+		if (primaryLane.laneCategory != 0) {
+			// see if you should merge to neighboring lane since you are in an edge lane
+			if (primaryLane.laneRank + primaryLane.laneCategory >= 0 &&
+					this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + primaryLane.laneCategory))) {
+				// merge into lane(primaryLane.laneRank + primaryLane.laneCategory)
+			}
+		} else {
+			// you are in a center lane and have two center lanes to choose from to
+			// merge into, choose one randomly
+			if (primaryLane.laneRank > 0 && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1)) && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
+				if (Math.random() < 5) {
+					// merge into lane(primaryLane.laneRank - 1)
+				} else {
+					// merge into lane(primaryLane.laneRank + 1)
+				}
+			} else if (this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
+				// merge into lane(primaryLane.laneRank + 1)
+			} else if (primaryLane.laneRank > 0 && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1))) {
+				// merge into lane(primaryLane.laneRank - 1)
+			}
+		}
+		
 		// if car is not at the front of the lane
 		if (this.index < primaryLane.vehicles.size()) {
 			Vehicle v = primaryLane.vehicles.get(this.index + 1);
