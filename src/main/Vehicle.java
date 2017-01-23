@@ -1,6 +1,7 @@
 package main;
 
 public abstract class Vehicle implements Comparable<Vehicle>  {
+	public int index;
 	public double position;
 	public double velocity;
 	public LaneManager primaryLane;
@@ -9,9 +10,7 @@ public abstract class Vehicle implements Comparable<Vehicle>  {
 	
 	public abstract void update();
 	
-	public abstract boolean shouldMergeCenter(LaneManager lane);
-	
-	public abstract boolean shouldMergeEdge(LaneManager lane);
+	public abstract boolean shouldMerge(LaneManager lane);
 	
 	@Override
 	public int compareTo(Vehicle o) {

@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Simulator {
 	public static final double maxLength = 1000;
-	double time;
+	public static double time;
 	public static final double dt = 1;
-	ArrayList<LaneManager> lanes;
+	public static ArrayList<LaneManager> lanes;
 	
 	public Simulator() {
 		// start time at 0
@@ -14,7 +14,7 @@ public class Simulator {
 		
 		// create lane configuration
 		lanes = new ArrayList<LaneManager>();
-		LaneManager singleLane = new LaneManager(this, 0, maxLength, 0);
+		LaneManager singleLane = new LaneManager(0, maxLength, 0);
 		lanes.add(singleLane);
 		
 		for (; this.time < 1000000000; this.time += dt) {
@@ -24,7 +24,7 @@ public class Simulator {
 		}
 	}
 	
-	public LaneManager getLane(int laneRank) {
+	public static LaneManager getLane(int laneRank) {
 		return lanes.get(laneRank);
 	}
 }

@@ -4,7 +4,6 @@ import java.util.*;
 public class LaneManager {
 	Queue<Vehicle> queue = new LinkedList<Vehicle>();
     ArrayList<Vehicle> vehicles;
-    Simulator simulator;
     
     int laneRank;
     int neighbor;
@@ -19,8 +18,7 @@ public class LaneManager {
     int laneCategory;
     double length;
     
-    public LaneManager(Simulator simulator, int laneRank, double length, int laneCategory) {
-    	this.simulator = simulator;
+    public LaneManager(int laneRank, double length, int laneCategory) {
         this.laneRank = laneRank;
         this.laneCategory = laneCategory;
         this.length = length;
@@ -30,14 +28,14 @@ public class LaneManager {
     }
     
     public void update() {
-    	if (simulator.time % this.prodRate == 0) {
+    	if (Simulator.time % this.prodRate == 0) {
     		// give this vehicle all the necessary properties
     		queue.add(new GoodDriver(0, this));
     		// update production rate
     		this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
     	}
     	
-    	if (simulator.time % this.processingRate == 0) {
+    	if (Simulator.time % this.processingRate == 0) {
 			if (!queue.isEmpty()) {
 	    		Vehicle car = queue.remove();
 	    		if (!vehicles.isEmpty()) {
@@ -47,6 +45,11 @@ public class LaneManager {
 	    		}
 	    		
 	    		vehicles.add(car);
+	    		
+	    		// update index of all cars in arraylist when new car is added
+	    		for (Vehicle veh : vehicles) {
+	    			veh.index++;
+	    		}
     		}
     	}
     	
@@ -91,32 +94,32 @@ public class LaneManager {
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMergeEdge(simulator.getLane(neighbor))) {
-            merge(i, v, simulator.getLane(neighbor));
+        if (v.shouldMerge(Simulator.getLane(neighbor))) {
+            merge(i, v, Simulator.getLane(neighbor));
         }
     }
     
     public void centerUpdate(int i) { // updates vehicle i in a center lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMergeCenter(simulator.getLane(laneRank - 1)) && v.shouldMergeCenter(simulator.getLane(laneRank + 1))) {
+        if (v.shouldMerge(Simulator.getLane(laneRank - 1)) && v.shouldMerge(Simulator.getLane(laneRank + 1))) {
             if ((new Random()).nextBoolean()) {
-                merge(i, v, simulator.getLane(laneRank - 1));
+                merge(i, v, Simulator.getLane(laneRank - 1));
             } else {
-                merge(i, v, simulator.getLane(laneRank + 1));
+                merge(i, v, Simulator.getLane(laneRank + 1));
             }
-        } else if (v.shouldMergeCenter(simulator.getLane(laneRank + 1))) {
-            merge(i, v, simulator.getLane(laneRank + 1));
-        } else if (v.shouldMergeCenter(simulator.getLane(laneRank - 1))) {
-            merge(i, v, simulator.getLane(laneRank - 1));
+        } else if (v.shouldMerge(Simulator.getLane(laneRank + 1))) {
+            merge(i, v, Simulator.getLane(laneRank + 1));
+        } else if (v.shouldMerge(Simulator.getLane(laneRank - 1))) {
+            merge(i, v, Simulator.getLane(laneRank - 1));
         } else {
             v.position += v.velocity * Simulator.dt;
         }
     }
     
     public boolean centerShouldMerge(int i, int laneRank) {
-        LaneManager lane = simulator.getLane(laneRank);
+        LaneManager lane = Simulator.getLane(laneRank);
         Vehicle v = vehicles.get(i);
-        return (this.laneCategory == 0) && v.shouldMergeCenter(lane);
+        return (this.laneCategory == 0) && v.shouldMerge(lane);
     }
     
     // returns minimum distance between position and nearest car. includes positions of merging cars
@@ -142,6 +145,7 @@ public class LaneManager {
     public int binarySearch(double position) {
         return binarySearch(position, vehicles.size(), 0);
     }
+    
     // Gets index of first vehicle with larger position
     public int binarySearch(double position, int max, int min) {
         int guess = (max - min) / 2;
