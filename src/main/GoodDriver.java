@@ -5,7 +5,7 @@ public class GoodDriver extends Vehicle {
 	public static final double alpha = 20;
 
 	public GoodDriver(double velocity, LaneManager lane) {
-		position = 0;
+		this.position = 0;
 		this.velocity = velocity;
 		this.primaryLane = lane;
 	}
@@ -24,7 +24,7 @@ public class GoodDriver extends Vehicle {
 			double dX = v.position - position;
 			acceleration = alpha * dV * velocity / (dX * dX);
 		} catch (NullPointerException e) { // top of lane
-			if (primaryLane.edgeLane) {
+			if (primaryLane.laneCategory != 0) {
 				double dX = primaryLane.length - position;
 
 			}

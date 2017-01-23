@@ -1,13 +1,11 @@
 package main;
 
-import main.*;
 public abstract class Vehicle implements Comparable<Vehicle>  {
 	public double position;
 	public double velocity;
 	public LaneManager primaryLane;
 	public boolean isMerging;
 	public double probableMerge = 1;
-	public double dummy;
 	
 	public abstract void update();
 	

@@ -7,24 +7,29 @@ public class LaneManager {
     Simulator simulator;
     
     int laneRank;
-    int neighor;
+    int neighbor;
     
     double lambda;
     Random rand = new Random();
     int prodRate;
     int processingRate;
     
-    boolean edgeLane;
+    // laneCategory is -1 if lane is top edge lane, 0 if lane is center lane,
+    // 1 if lane is bottom edge lane
+    int laneCategory;
     double length;
     
-    public LaneManager(int laneRank, double length) {
+    public LaneManager(Simulator simulator, int laneRank, double length, int laneCategory) {
+    	this.simulator = simulator;
         this.laneRank = laneRank;
+        this.laneCategory = laneCategory;
         this.length = length;
         this.lambda = 1;
         this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
+        this.processingRate = 1;
     }
     
-    public void update() { // updates positions, velocities and lanes of vehicles
+    public void update() {
     	if (simulator.time % this.prodRate == 0) {
     		// give this vehicle all the necessary properties
     		queue.add(new GoodDriver(0, this));
@@ -45,7 +50,16 @@ public class LaneManager {
     		}
     	}
     	
-    	
+    	// update the position and velocity
+    	ArrayList<Vehicle> copy = vehicles;
+    	Collections.shuffle(copy);
+    	for(Vehicle car : copy) {
+    		if (car.position >= Simulator.maxLength) {
+    			vehicles.remove(car);
+    		} else {
+    			car.update();
+    		}
+    	}
     	
         /*for (int i = vehicles.size() - 1; i >= 0; i--) {
         	vehicles.get(i).update();
@@ -77,8 +91,8 @@ public class LaneManager {
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMergeEdge(simulator.getLane(neighor))) {
-            merge(i, v, simulator.getLane(neighor));
+        if (v.shouldMergeEdge(simulator.getLane(neighbor))) {
+            merge(i, v, simulator.getLane(neighbor));
         }
     }
     
@@ -102,7 +116,7 @@ public class LaneManager {
     public boolean centerShouldMerge(int i, int laneRank) {
         LaneManager lane = simulator.getLane(laneRank);
         Vehicle v = vehicles.get(i);
-        return (!lane.edgeLane) && v.shouldMergeCenter(lane);
+        return (this.laneCategory == 0) && v.shouldMergeCenter(lane);
     }
     
     // returns minimum distance between position and nearest car. includes positions of merging cars
