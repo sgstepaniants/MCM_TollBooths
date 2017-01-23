@@ -4,6 +4,8 @@ import java.util.*;
 public class LaneManager {
 	Queue<Vehicle> queue = new LinkedList<Vehicle>();
     ArrayList<Vehicle> vehicles;
+    Queue<Double> timeQueue = new LinkedList<Double>();
+    Queue<Boolean> hadSuddenBrake = new LinkedList<Boolean>();
     
     int laneRank;
     int neighbor;
@@ -62,6 +64,8 @@ public class LaneManager {
     		Vehicle car = iter.next();
     		if (car.position >= Simulator.maxLength) {
     			vehicles.remove(car);
+    			timeQueue.add(car.time);
+    			hadSuddenBrake.add(car.hadSuddenBrake);
     		} else {
     			car.update();
     		}
@@ -88,12 +92,6 @@ public class LaneManager {
     //		mergingVehicles.clear();
     //	}
     
-    public void merge(int i, Vehicle v, LaneManager lane) { // merges vehicle i into LaneManager lane
-        vehicles.remove(i);
-        lane.mergingVehicles.add(i, v);
-        v.hasMerged = true;
-        v.primaryLane = lane;
-    }
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
         Vehicle v = vehicles.get(i);
