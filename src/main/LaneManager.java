@@ -2,12 +2,16 @@ package main;
 
 import java.util.*;
 public abstract class LaneManager {
-    ArrayList<Vehicle> vehicles;
+    Queue<Vehicle> vehicles;
     ArrayList<Vehicle> mergingVehicles;
-    Simulator manager;
+    Simulator simulator;
     
     int laneRank;
     int neighor;
+    
+    double lambda;
+    Random rand = new Random();
+    int prodRate;
     
     boolean edgeLane;
     double length;
@@ -15,10 +19,17 @@ public abstract class LaneManager {
     public LaneManager(int laneRank, double length) {
         this.laneRank = laneRank;
         this.length = length;
+        this.lambda = 1;
+        this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
     }
     
-    public void updateVehicles() { // updates positions, velocities and lanes of vehicles
-        for (int i = vehicles.size() - 1; i >= 0; i--) {
+    public void update() { // updates positions, velocities and lanes of vehicles
+    	if (simulator.time % this.prodRate == 0) {
+    		vehicles.add(new Vehicle());
+    		this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
+    	}
+    	
+        /*for (int i = vehicles.size() - 1; i >= 0; i--) {
         	vehicles.get(i).update();
             if (!vehicles.get(i).isMerging) {
                 if (edgeLane) {
@@ -29,7 +40,7 @@ public abstract class LaneManager {
             } else {
                 vehicles.get(i).isMerging = false;
             }
-        }
+        }*/
     }
     
     //	public void addMergingVehicles() { // adds merging vehicles to current vehicles

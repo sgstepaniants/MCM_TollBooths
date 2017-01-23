@@ -3,7 +3,7 @@ package main;
 import java.util.*;
 
 public class Simulator {
-	public static final double dt = 0.01;
+	public static final double dt = 1;
 	ArrayList<LaneManager> lanes;
 	
 	public Simulator() {
