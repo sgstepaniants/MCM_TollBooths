@@ -1,9 +1,9 @@
 package main;
 
 import java.util.*;
-public abstract class LaneManager {
-    Queue<Vehicle> vehicles;
-    ArrayList<Vehicle> mergingVehicles;
+public class LaneManager {
+	Queue<Vehicle> queue = new LinkedList<Vehicle>();
+    ArrayList<Vehicle> vehicles;
     Simulator simulator;
     
     int laneRank;
@@ -12,6 +12,7 @@ public abstract class LaneManager {
     double lambda;
     Random rand = new Random();
     int prodRate;
+    int processingRate;
     
     boolean edgeLane;
     double length;
@@ -25,9 +26,25 @@ public abstract class LaneManager {
     
     public void update() { // updates positions, velocities and lanes of vehicles
     	if (simulator.time % this.prodRate == 0) {
-    		vehicles.add(new Vehicle());
+    		// give this vehicle all the necessary properties
+    		queue.add(new GoodDriver(0, this));
+    		// update production rate
     		this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
     	}
+    	
+    	if (simulator.time % this.processingRate == 0) {
+			if (!queue.isEmpty())
+	    		Vehicle car = queue.remove();
+	    		if (!vehicles.isEmpty()) {
+	    			car.velocity = vehicles.get(1).velocity;
+	    		} else {
+	    			car.velocity = 60;
+	    		}
+	    		
+	    		vehicles.add(car);
+    		}
+    	}
+    	
     	
         /*for (int i = vehicles.size() - 1; i >= 0; i--) {
         	vehicles.get(i).update();
