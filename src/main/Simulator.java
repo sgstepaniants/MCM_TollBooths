@@ -17,7 +17,7 @@ public class Simulator {
 		LaneManager singleLane = new LaneManager(0, maxLength, 0);
 		lanes.add(singleLane);
 		
-		for (; this.time < 1000000000; this.time += dt) {
+		for (; this.time < 10000; this.time += dt) {
 			for (LaneManager lane : lanes) {
 				// at every timestep, the lane is updated which in turn, updates every car
 				// in the lane in random order

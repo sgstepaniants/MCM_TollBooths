@@ -61,10 +61,10 @@ public class LaneManager {
     	}
     	
     	// update the position and velocity
-    	ArrayList<Vehicle> copy = vehicles;
+    	ArrayList<Vehicle> copy = new ArrayList<Vehicle>(vehicles);
     	Collections.shuffle(copy);
     	
-    	for(Vehicle car : copy) {
+    	for (Vehicle car : copy) {
     		if (car.position >= Simulator.maxLength) {
     			vehicles.remove(car);
     			timeQueue.add(car.time);
