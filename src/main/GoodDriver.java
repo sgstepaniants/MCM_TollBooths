@@ -31,15 +31,20 @@ public class GoodDriver extends Vehicle {
 			} else {
 				// you are in a center lane and have two center lanes to choose from to
 				// merge into, choose one randomly
-				if (primaryLane.laneRank > 0 && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1)) && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
+				if (primaryLane.laneRank > 0 &&
+						primaryLane.laneRank < Simulator.lanes.size() &&
+						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1)) &&
+						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
 					if (Math.random() < 5) {
 						// merge into lane(primaryLane.laneRank - 1)
 					} else {
 						// merge into lane(primaryLane.laneRank + 1)
 					}
-				} else if (this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
+				} else if (primaryLane.laneRank < Simulator.lanes.size() &&
+						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
 					// merge into lane(primaryLane.laneRank + 1)
-				} else if (primaryLane.laneRank > 0 && this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1))) {
+				} else if (primaryLane.laneRank > 0 &&
+						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1))) {
 					// merge into lane(primaryLane.laneRank - 1)
 				}
 			}
