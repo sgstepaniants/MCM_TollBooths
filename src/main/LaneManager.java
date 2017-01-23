@@ -64,9 +64,7 @@ public class LaneManager {
     	ArrayList<Vehicle> copy = vehicles;
     	Collections.shuffle(copy);
     	
-    	Iterator<Vehicle> iter = copy.iterator();
-    	while(iter.hasNext()) {
-    		Vehicle car = iter.next();
+    	for(Vehicle car : copy) {
     		if (car.position >= Simulator.maxLength) {
     			vehicles.remove(car);
     			timeQueue.add(car.time);
