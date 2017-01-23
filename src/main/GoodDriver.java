@@ -3,6 +3,8 @@ package main;
 import java.util.*;
 public class GoodDriver extends Vehicle {
 	public static final double alpha = 20;
+	public static final double brakingThreshold = -45;
+	
 
 	public GoodDriver(double velocity, LaneManager lane) {
 		// index of car in arraylist
@@ -13,6 +15,9 @@ public class GoodDriver extends Vehicle {
 		this.velocity = velocity;
 		// lane that car is currently in
 		this.primaryLane = lane;
+		
+		time = 0;
+		hadSuddenBrake = false;
 	}
 	
 	
@@ -66,8 +71,13 @@ public class GoodDriver extends Vehicle {
 			double dV = 60 - velocity;
 			acceleration = alpha * dV;
 		}
+		
 		velocity += acceleration * Simulator.dt;
 		position += velocity * Simulator.dt;
+		
+		if (acceleration < brakingThreshold) {
+			hadSuddenBrake = true;
+		}
 		
 		this.hasMerged = false;
 	}

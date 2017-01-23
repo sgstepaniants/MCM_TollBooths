@@ -7,6 +7,9 @@ public abstract class Vehicle implements Comparable<Vehicle>  {
 	public LaneManager primaryLane;
 	public boolean hasMerged;
 	public double probableMerge = 1;
+	public double time;
+	public boolean hadSuddenBrake;
+
 	
 	public abstract void update();
 	
