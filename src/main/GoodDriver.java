@@ -20,7 +20,7 @@ public class GoodDriver extends Vehicle {
 		double acceleration = 0;
 		
 		// see if you need to merge before anything else
-		if (car.) {
+		if (!this.hasMerged) {
 			// if car is not in center lane
 			if (primaryLane.laneCategory != 0) {
 				// see if you should merge to neighboring lane since you are in an edge lane
@@ -63,6 +63,8 @@ public class GoodDriver extends Vehicle {
 		}
 		velocity += acceleration * Simulator.dt;
 		position += velocity * Simulator.dt;
+		
+		this.hasMerged = false;
 	}
 	
 	public boolean shouldMerge(LaneManager lane) {
