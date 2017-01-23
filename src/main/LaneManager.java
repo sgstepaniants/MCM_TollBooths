@@ -2,10 +2,10 @@ package main;
 
 import java.util.*;
 public class LaneManager {
-	Queue<Vehicle> queue = new LinkedList<Vehicle>();
+	Queue<Vehicle> queue;
     ArrayList<Vehicle> vehicles;
-    Queue<Double> timeQueue = new LinkedList<Double>();
-    Queue<Boolean> hadSuddenBrake = new LinkedList<Boolean>();
+    Queue<Double> timeQueue;
+    Queue<Boolean> hadSuddenBrake;
     
     int laneRank;
     int neighbor;
@@ -27,6 +27,11 @@ public class LaneManager {
         this.lambda = 1;
         this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
         this.processingRate = 1;
+        queue = new LinkedList<Vehicle>();
+        timeQueue = new LinkedList<Double>();
+        hadSuddenBrake = new LinkedList<Boolean>();
+        vehicles = new ArrayList<Vehicle>();
+        
     }
     
     public void update() {
@@ -41,7 +46,7 @@ public class LaneManager {
 			if (!queue.isEmpty()) {
 	    		Vehicle car = queue.remove();
 	    		if (!vehicles.isEmpty()) {
-	    			car.velocity = vehicles.get(1).velocity;
+	    			car.velocity = vehicles.get(0).velocity;
 	    		} else {
 	    			car.velocity = 60;
 	    		}

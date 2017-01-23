@@ -45,9 +45,10 @@ public class GoodDriver extends Vehicle {
 					} else {
 						// merge into lane(primaryLane.laneRank + 1)
 					}
-				} else if (primaryLane.laneRank < Simulator.lanes.size() &&
+				} else if (primaryLane.laneRank < Simulator.lanes.size() -1 &&
 						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank + 1))) {
 					// merge into lane(primaryLane.laneRank + 1)
+					
 				} else if (primaryLane.laneRank > 0 &&
 						this.shouldMerge(Simulator.lanes.get(primaryLane.laneRank - 1))) {
 					// merge into lane(primaryLane.laneRank - 1)
@@ -56,7 +57,7 @@ public class GoodDriver extends Vehicle {
 		}
 		
 		// if car is not at the front of the lane
-		if (this.index < primaryLane.vehicles.size()) {
+		if (this.index < primaryLane.vehicles.size() - 1) {
 			Vehicle v = primaryLane.vehicles.get(this.index + 1);
 			double dV = v.velocity - velocity;
 			double dX = v.position - position;
