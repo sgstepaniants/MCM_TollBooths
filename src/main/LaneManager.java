@@ -1,13 +1,18 @@
 package main;
 
 import java.util.*;
-public abstract class LaneManager {
+public class LaneManager {
+	Queue<Vehicle> queue = new LinkedList<Vehicle>();
     ArrayList<Vehicle> vehicles;
-    ArrayList<Vehicle> mergingVehicles;
-    Simulator manager;
+    Simulator simulator;
     
     int laneRank;
     int neighor;
+    
+    double lambda;
+    Random rand = new Random();
+    int prodRate;
+    int processingRate;
     
     boolean edgeLane;
     double length;
@@ -15,10 +20,34 @@ public abstract class LaneManager {
     public LaneManager(int laneRank, double length) {
         this.laneRank = laneRank;
         this.length = length;
+        this.lambda = 1;
+        this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
     }
     
-    public void updateVehicles() { // updates positions, velocities and lanes of vehicles
-        for (int i = vehicles.size() - 1; i >= 0; i--) {
+    public void update() { // updates positions, velocities and lanes of vehicles
+    	if (simulator.time % this.prodRate == 0) {
+    		// give this vehicle all the necessary properties
+    		queue.add(new GoodDriver(0, this));
+    		// update production rate
+    		this.prodRate = (int) Math.ceil(Math.log(1-rand.nextDouble())/(-lambda));
+    	}
+    	
+    	if (simulator.time % this.processingRate == 0) {
+			if (!queue.isEmpty()) {
+	    		Vehicle car = queue.remove();
+	    		if (!vehicles.isEmpty()) {
+	    			car.velocity = vehicles.get(1).velocity;
+	    		} else {
+	    			car.velocity = 60;
+	    		}
+	    		
+	    		vehicles.add(car);
+    		}
+    	}
+    	
+    	
+    	
+        /*for (int i = vehicles.size() - 1; i >= 0; i--) {
         	vehicles.get(i).update();
             if (!vehicles.get(i).isMerging) {
                 if (edgeLane) {
@@ -29,7 +58,7 @@ public abstract class LaneManager {
             } else {
                 vehicles.get(i).isMerging = false;
             }
-        }
+        }*/
     }
     
     //	public void addMergingVehicles() { // adds merging vehicles to current vehicles
@@ -48,30 +77,30 @@ public abstract class LaneManager {
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMergeEdge(manager.getLane(neighor))) {
-            merge(i, v, manager.getLane(neighor));
+        if (v.shouldMergeEdge(simulator.getLane(neighor))) {
+            merge(i, v, simulator.getLane(neighor));
         }
     }
     
     public void centerUpdate(int i) { // updates vehicle i in a center lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMergeCenter(manager.getLane(laneRank - 1)) && v.shouldMergeCenter(manager.getLane(laneRank + 1))) {
+        if (v.shouldMergeCenter(simulator.getLane(laneRank - 1)) && v.shouldMergeCenter(simulator.getLane(laneRank + 1))) {
             if ((new Random()).nextBoolean()) {
-                merge(i, v, manager.getLane(laneRank - 1));
+                merge(i, v, simulator.getLane(laneRank - 1));
             } else {
-                merge(i, v, manager.getLane(laneRank + 1));
+                merge(i, v, simulator.getLane(laneRank + 1));
             }
-        } else if (v.shouldMergeCenter(manager.getLane(laneRank + 1))) {
-            merge(i, v, manager.getLane(laneRank + 1));
-        } else if (v.shouldMergeCenter(manager.getLane(laneRank - 1))) {
-            merge(i, v, manager.getLane(laneRank - 1));
+        } else if (v.shouldMergeCenter(simulator.getLane(laneRank + 1))) {
+            merge(i, v, simulator.getLane(laneRank + 1));
+        } else if (v.shouldMergeCenter(simulator.getLane(laneRank - 1))) {
+            merge(i, v, simulator.getLane(laneRank - 1));
         } else {
             v.position += v.velocity * Simulator.dt;
         }
     }
     
     public boolean centerShouldMerge(int i, int laneRank) {
-        LaneManager lane = manager.getLane(laneRank);
+        LaneManager lane = simulator.getLane(laneRank);
         Vehicle v = vehicles.get(i);
         return (!lane.edgeLane) && v.shouldMergeCenter(lane);
     }

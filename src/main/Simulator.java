@@ -3,11 +3,14 @@ package main;
 import java.util.*;
 
 public class Simulator {
-	public static final double dt = 0.01;
+	double time;
+	public static final double dt = 1;
 	ArrayList<LaneManager> lanes;
 	
 	public Simulator() {
-		for (double time = 0; time < 1000000000; time += dt) {
+		this.time = 0;
+		
+		for (; this.time < 1000000000; this.time += dt) {
 			for (LaneManager lane : lanes) {
 				// populate lanes
 				
