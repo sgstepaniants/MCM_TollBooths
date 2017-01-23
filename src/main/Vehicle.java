@@ -5,7 +5,7 @@ public abstract class Vehicle implements Comparable<Vehicle>  {
 	public double position;
 	public double velocity;
 	public LaneManager primaryLane;
-	public boolean isMerging;
+	public boolean hasMerged;
 	public double probableMerge = 1;
 	
 	public abstract void update();

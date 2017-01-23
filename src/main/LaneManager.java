@@ -88,36 +88,36 @@ public class LaneManager {
     public void merge(int i, Vehicle v, LaneManager lane) { // merges vehicle i into LaneManager lane
         vehicles.remove(i);
         lane.mergingVehicles.add(i, v);
-        v.isMerging = true;
+        v.hasMerged = true;
         v.primaryLane = lane;
     }
     
     public void edgeUpdate(int i) { // updates vehicle i in an edge lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMerge(Simulator.getLane(neighbor))) {
-            merge(i, v, Simulator.getLane(neighbor));
+        if (v.shouldMerge(Simulator.lanes.get(neighbor))) {
+            merge(i, v, Simulator.lanes.get(neighbor));
         }
     }
     
     public void centerUpdate(int i) { // updates vehicle i in a center lane
         Vehicle v = vehicles.get(i);
-        if (v.shouldMerge(Simulator.getLane(laneRank - 1)) && v.shouldMerge(Simulator.getLane(laneRank + 1))) {
+        if (v.shouldMerge(Simulator.lanes.get(laneRank - 1)) && v.shouldMerge(Simulator.lanes.get(laneRank + 1))) {
             if ((new Random()).nextBoolean()) {
-                merge(i, v, Simulator.getLane(laneRank - 1));
+                merge(i, v, Simulator.lanes.get(laneRank - 1));
             } else {
-                merge(i, v, Simulator.getLane(laneRank + 1));
+                merge(i, v, Simulator.lanes.get(laneRank + 1));
             }
-        } else if (v.shouldMerge(Simulator.getLane(laneRank + 1))) {
-            merge(i, v, Simulator.getLane(laneRank + 1));
-        } else if (v.shouldMerge(Simulator.getLane(laneRank - 1))) {
-            merge(i, v, Simulator.getLane(laneRank - 1));
+        } else if (v.shouldMerge(Simulator.lanes.get(laneRank + 1))) {
+            merge(i, v, Simulator.lanes.get(laneRank + 1));
+        } else if (v.shouldMerge(Simulator.lanes.get(laneRank - 1))) {
+            merge(i, v, Simulator.lanes.get(laneRank - 1));
         } else {
             v.position += v.velocity * Simulator.dt;
         }
     }
     
     public boolean centerShouldMerge(int i, int laneRank) {
-        LaneManager lane = Simulator.getLane(laneRank);
+        LaneManager lane = Simulator.lanes.get(laneRank);
         Vehicle v = vehicles.get(i);
         return (this.laneCategory == 0) && v.shouldMerge(lane);
     }
