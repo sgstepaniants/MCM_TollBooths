@@ -32,15 +32,17 @@ public class GoodDriver extends Vehicle {
 			acceleration = alpha * dV;
 		}
 		velocity += acceleration * Simulator.dt;
+		position += velocity * Simulator.dt;
 	}
 	
 	public boolean shouldMergeEdge(LaneManager lane) {
-		return false;
+		return true; //fix this
 	}
 	
 	public boolean shouldMergeCenter(LaneManager lane) {
-		if (Math.random() <= probableMerge) {
-			
+		if (Math.random() <= probableMerge) { // merge if possible
+			return (primaryLane.getCongestion() / lane.getCongestion() > 1.3) &&
+					lane.openSpace(position + velocity * Simulator.dt) > 2 * velocity;
 		}
 		return false;
 	}
