@@ -73,58 +73,7 @@ public class LaneManager {
     			car.update();
     		}
     	}
-    	
-        /*for (int i = vehicles.size() - 1; i >= 0; i--) {
-        	vehicles.get(i).update();
-            if (!vehicles.get(i).isMerging) {
-                if (edgeLane) {
-                    edgeUpdate(i);
-                } else {
-                    centerUpdate(i);
-                }
-            } else {
-                vehicles.get(i).isMerging = false;
-            }
-        }*/
     }
-    
-    //	public void addMergingVehicles() { // adds merging vehicles to current vehicles
-    //		for (Vehicle vehicle : mergingVehicles) {
-    //			vehicles.add(binarySearch(vehicle.position));
-    //		}
-    //		mergingVehicles.clear();
-    //	}
-    
-    
-//    public void edgeUpdate(int i) { // updates vehicle i in an edge lane
-//        Vehicle v = vehicles.get(i);
-//        if (v.shouldMerge(Simulator.lanes.get(neighbor))) {
-//            merge(i, v, Simulator.lanes.get(neighbor));
-//        }
-//    }
-    
-//    public void centerUpdate(int i) { // updates vehicle i in a center lane
-//        Vehicle v = vehicles.get(i);
-//        if (v.shouldMerge(Simulator.lanes.get(laneRank - 1)) && v.shouldMerge(Simulator.lanes.get(laneRank + 1))) {
-//            if ((new Random()).nextBoolean()) {
-//                merge(i, v, Simulator.lanes.get(laneRank - 1));
-//            } else {
-//                merge(i, v, Simulator.lanes.get(laneRank + 1));
-//            }
-//        } else if (v.shouldMerge(Simulator.lanes.get(laneRank + 1))) {
-//            merge(i, v, Simulator.lanes.get(laneRank + 1));
-//        } else if (v.shouldMerge(Simulator.lanes.get(laneRank - 1))) {
-//            merge(i, v, Simulator.lanes.get(laneRank - 1));
-//        } else {
-//            v.position += v.velocity * Simulator.dt;
-//        }
-//    }
-//    
-//    public boolean centerShouldMerge(int i, int laneRank) {
-//        LaneManager lane = Simulator.lanes.get(laneRank);
-//        Vehicle v = vehicles.get(i);
-//        return (this.laneCategory == 0) && v.shouldMerge(lane);
-//    }
     
     // returns minimum distance between position and nearest car. includes positions of merging cars
     public double openSpace(double position) {
